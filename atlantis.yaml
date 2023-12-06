@@ -1,35 +1,11 @@
-# Setup rules for auto plan using different workspaces
-# 
-
+# atlantis.yaml
 version: 3
 projects:
-- dir: atlantis_example
-  workspace: ws_staging
-- dir: atlantis_example
-  workspace: ws_production
-    
-workflows:
-  staging:
-    plan:
-      steps:
-      - init
-      - plan:
-          extra_args: ["-var-file", "servico/staging.tfvars"]
-    # NOTE: no need to define the apply stage because it will default
-    # to the normal apply stage.
-    
-  production:
-    plan:
-      steps:
-      - init
-      - plan:
-          extra_args: ["-var-file", "servico/production.tfvars"]
-    apply:
-      steps:
-        - apply:
-            extra_args: ["-var-file", "servico/production.tfvars"]
-    import:
-      steps:
-        - init
-        - import:
-            extra_args: ["-var-file", "servico/production.tfvars"]
+# If two or more projects have the same dir and workspace, they must also have
+# a 'name' key to differentiate them.
+- name: servico-staging
+  dir: atlantis-example
+  workflow: staging
+- name: servico-production
+  dir: atlantis-example
+  workflow: production
