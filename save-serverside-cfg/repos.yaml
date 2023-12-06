@@ -1,0 +1,34 @@
+repos:
+- id: /.*/
+  allowed_overrides:  [workflow]
+
+workflows:
+  staging:
+    plan:
+      steps:
+      - init
+      - plan:
+          extra_args: ["-var-file", "servico/staging.tfvars"]
+    # NOTE: no need to define the apply stage because it will default
+    # to the normal apply stage.
+
+  production:
+    plan:
+      steps:
+      - init
+      - plan:
+          extra_args: ["-var-file", "servico/prod.tfvars"]
+    apply:
+      steps:
+        - apply:
+            extra_args: ["-var-file", "servico/prod.tfvars"]
+    import:
+      steps:
+        - init
+        - import:
+            extra_args: ["-var-file", "servico/prod.tfvars"]
+    state_rm:
+      steps:
+        - init
+        - state_rm:
+            extra_args: ["-lock=false"]

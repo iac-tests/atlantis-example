@@ -1,0 +1,13 @@
+# atlantis.yaml
+version: 3
+projects:
+# If two or more projects have the same dir and workspace, they must also have
+# a 'name' key to differentiate them.
+- name: servico-staging
+  dir: .
+  workspace: ws_staging
+  workflow: staging
+- name: servico-production
+  dir: .
+  workspace: ws_production
+  workflow: production
